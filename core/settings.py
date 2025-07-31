@@ -16,6 +16,7 @@ if not IS_BUILD_PHASE:
         SECRET_KEY = config('SECRET_KEY')
         DEBUG = False
         ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
+        CSRF_TRUSTED_ORIGINS = ['https://railway-test-repository-production.up.railway.app/']
     else:
         SECRET_KEY = config('SECRET_KEY', default='django-insecure-local-dev-key-!@#$%^&*()')
         DEBUG = True
