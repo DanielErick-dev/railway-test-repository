@@ -50,6 +50,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+LOGIN_URL = '/'
+
+LOGIN_REDIRECT_URL = '/students/list/'
+
+LOGOUT_REDIRECT_URL = '/'
+
 ROOT_URLCONF = "minitest.urls"
 
 TEMPLATES = [
