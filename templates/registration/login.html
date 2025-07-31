@@ -1,41 +1,45 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-900">
-    <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-semibold text-center text-white mb-6">Login</h2>
-        
-        <form method="post" class="space-y-5">
-            {% csrf_token %}
-            <div>
-                <label for="username" class="block text-sm text-gray-300 mb-1">Usuário</label>
-                <input type="text" name="username" id="username"
-                    class="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" />
-            </div>
-            
-            <div>
-                <label for="password" class="block text-sm text-gray-300 mb-1">Senha</label>
-                <input type="password" name="password" id="password"
-                    class="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" />
-            </div>
-            
-            <button type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md transition duration-200">
-                Entrar
-            </button>
-        </form>
+{% extends "base.html" %}
+{% block title %}Login - Strong Fitness{% endblock %}
 
-        {% if form.errors %}
-            <div class="mt-4 bg-red-500/10 text-red-300 border border-red-600 rounded-md p-3 text-sm">
-                <ul class="list-disc list-inside">
-                    {% for field in form %}
+{% block content %}
+    <div class="min-h-screen flex items-center justify-center bg-gray-900">
+        <div class="bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md">
+            <h2 class="text-2xl font-semibold text-center text-white mb-6">Login</h2>
+            
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm text-gray-300 mb-1">Usuário</label>
+                    <input type="text" name="username" id="username"
+                        class="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" />
+                    </div>
+                
+                <div>
+                    <label for="password" class="block text-sm text-gray-300 mb-1">Senha</label>
+                    <input type="password" name="password" id="password"
+                        class="w-full px-4 py-2 bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500" />
+                </div>
+                
+                <button type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md transition duration-200">
+                    Entrar
+                </button>
+            </form>
+            
+            {% if form.errors %}
+                <div class="mt-4 bg-red-500/10 text-red-300 border border-red-600 rounded-md p-3 text-sm">
+                    <ul class="list-disc list-inside">
+                        {% for field in form %}
                         {% for error in field.errors %}
-                            <li>{{ error }}</li>
+                        <li>{{ error }}</li>
                         {% endfor %}
-                    {% endfor %}
-                    {% for erro in form.non_field_errors %}
+                        {% endfor %}
+                        {% for erro in form.non_field_errors %}
                         <li>{{ erro }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
     </div>
-</div>
-
+{% endblock %}
