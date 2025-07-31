@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}
+    Deletando Aluno {{ object.name }}
+{% endblock  %}
+{% block content %}
+    <div class="container mt-4">
+        <h3 class="display-6">Deletar Aluno</h3>
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">tem certeza que deseja excluir o aluno <strong>{{ object.name|title }} {{ object.lastname|title }} portador do CPF: {{ object.cpf }}</strong></p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Deletar</button>
+                </form>
+                <a href="{% url 'get_students' %}" class="btn btn-light mt-3">Voltar Para Lista</a>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

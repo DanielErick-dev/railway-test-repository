@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Cadastrar Aluno - Strong Fitness
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-white mb-6">Cadastrar Novo Aluno</h1>
+
+        <div class="bg-gray-800/50 rounded-xl shadow-lg p-6 sm:p-8 border border-gray-700">
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="bg-red-500/20 text-red-300 p-3 rounded-lg mb-6">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+                    
+                    <div>
+                        <label for="{{ form.name.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-300">Nome</label>
+                        {{ form.name|add_class:"bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" }}
+                        {% if form.name.errors %}<div class="text-red-400 text-xs mt-1">{{ form.name.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    <div>
+                        <label for="{{ form.lastname.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-300">Sobrenome</label>
+                        {{ form.lastname|add_class:"bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" }}
+                        {% if form.lastname.errors %}<div class="text-red-400 text-xs mt-1">{{ form.lastname.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    <div>
+                        <label for="{{ form.cpf.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-300">CPF</label>
+                        {{ form.cpf|add_class:"bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"|attr:"placeholder:000.000.000-00" }}
+                        {% if form.cpf.errors %}<div class="text-red-400 text-xs mt-1">{{ form.cpf.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    <div>
+                        <label for="{{ form.sex.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-300">Sexo</label>
+                        {{ form.sex|add_class:"bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" }}
+                        {% if form.sex.errors %}<div class="text-red-400 text-xs mt-1">{{ form.sex.errors|striptags }}</div>{% endif %}
+                    </div>
+
+                    <div>
+                        <label for="{{ form.phone_number.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-300">Número de Telefone</label>
+                        {{ form.phone_number|add_class:"bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"|attr:"placeholder:(00) 00000-0000" }}
+                        {% if form.phone_number.errors %}<div class="text-red-400 text-xs mt-1">{{ form.phone_number.errors|striptags }}</div>{% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.date_of_birth.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-300">Data de Nascimento</label>
+                        <input type="date" name="{{ form.date_of_birth.name }}" id="{{ form.date_of_birth.id_for_label }}"
+                            class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                        {% if form.date_of_birth.errors %}<div class="text-red-400 text-xs mt-1">{{ form.date_of_birth.errors|striptags }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-5 border-t border-gray-700 flex items-center justify-end gap-4">
+                    <a href="{% url 'get_students' %}" class="px-5 py-2.5 text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">Voltar</a>
+                    <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-800 transition-colors">Cadastrar Aluno</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'core/js/mascara.js' %}" defer></script>
+{% endblock %}
