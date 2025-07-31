@@ -1,0 +1,32 @@
+services:
+  service_strong_fitness:
+    build: .
+    restart: always
+    ports:
+      - 8000:8000
+    depends_on:
+      service_postgres_db:
+        condition: service_healthy
+    env_file:
+      - .env   
+    environment:
+      - TZ=America/Sao_Paulo
+
+  service_postgres_db:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres_data:
