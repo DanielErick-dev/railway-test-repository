@@ -2,4 +2,4 @@
 builder = "DOCKERFILE"
 
 [deploy]
-startCommand = "gunicorn minitest.wsgi:application"
+startCommand = "gunicorn core.wsgi:application"
