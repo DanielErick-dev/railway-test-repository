@@ -18,9 +18,7 @@
         {% block content %}   
         {% endblock %}
     </main>
-
-    <footer class="p-4 text-center text-sm text-gray-500 border-t border-gray-800">
-        &copy; {% now "Y" %} Strong Fitness. Todos os direitos reservados.
-    </footer>
+    {% include 'components/_footer.html' %}
+    
 </body>
 </html>

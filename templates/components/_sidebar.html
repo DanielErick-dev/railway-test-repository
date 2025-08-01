@@ -1,27 +1,27 @@
 <div class="h-full flex flex-col bg-gray-800 text-gray-300">
     <div class="p-4 border-b border-gray-700">
-        <a href="#" class="text-white text-xl font-bold">
+        <a href="{% url 'get_students' %}" class="text-white text-xl font-bold">
             Academia Strong Fitness
         </a>
     </div>
 
     <nav class="flex-grow p-4 space-y-2">
-        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors hover:bg-gray-700 hover:text-white">
+        <a href="{% url 'get_students' %}" class="flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors hover:bg-gray-700 hover:text-white">
             <i class="bi bi-people-fill text-lg"></i>
             <span class="font-medium">Alunos</span>
         </a>
-        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors hover:bg-gray-700 hover:text-white">
+        <a href="{% url 'pending_students' %}" class="flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors hover:bg-gray-700 hover:text-white">
             <i class="bi bi-person-dash-fill text-lg"></i>
             <span class="font-medium">Alunos Pendentes</span>
         </a>
-        <a href="#" class="flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors hover:bg-gray-700 hover:text-white">
+        <a href="{% url 'inactive_students' %}" class="flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors hover:bg-gray-700 hover:text-white">
             <i class="bi bi-person-x-fill text-lg"></i>
             <span class="font-medium">Alunos Inativos</span>
         </a>
     </nav>
 
     <div class="border-t border-gray-700 p-4">
-        <form method="post" action="#" class="w-full">
+        <form method="post" action="{% url 'logout' %}" class="w-full">
             {% csrf_token %}
             <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors text-red-400 hover:bg-red-500 hover:text-white">
                 <i class="bi bi-box-arrow-right text-lg"></i>

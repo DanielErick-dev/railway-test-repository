@@ -9,7 +9,6 @@
 {% block content %}
     <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-white mb-6">Cadastrar Novo Aluno</h1>
-
         <div class="bg-gray-800/50 rounded-xl shadow-lg p-6 sm:p-8 border border-gray-700">
             <form method="post">
                 {% csrf_token %}
@@ -67,5 +66,5 @@
             </form>
         </div>
     </div>
-    <script src="{% static 'core/js/mascara.js' %}" defer></script>
+    <script src="{% static 'js/mascara.js' %}" defer></script>
 {% endblock %}
