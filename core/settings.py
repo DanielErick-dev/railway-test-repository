@@ -17,6 +17,9 @@ if not IS_BUILD_PHASE:
         DEBUG = False
         ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
         CSRF_TRUSTED_ORIGINS = ['https://railway-test-repository-production.up.railway.app/']
+        SESSION_COOKIE_SECURE = True
+        CSRF_COOKIE_SECURE = True
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     else:
         SECRET_KEY = config('SECRET_KEY', default='django-insecure-local-dev-key-!@#$%^&*()')
         DEBUG = True
