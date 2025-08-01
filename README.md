@@ -1,6 +1,7 @@
 # Academia Strong Fitness - Sistema de Gestão
 
-![image](https://github.com/user-attachments/assets/c652936b-8e0d-49a3-8482-02e22de96b33)
+<img width="1352" height="647" alt="image" src="https://github.com/user-attachments/assets/0e23a34f-7142-4aa2-a659-fa5815ed0c13" />
+
 
 ## 📖 Sobre o Projeto
 
