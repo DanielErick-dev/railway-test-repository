@@ -15,7 +15,7 @@ COPY . .
 RUN SECRET_KEY=dummy DEBUG=False python manage.py collectstatic --no-input
 
 RUN echo '#!/bin/sh' > /app/run_tasks.sh && \
-    echo '. /etc/environment' >> /app/run_tasks.sh && \
+    echo '. /etc/environment.sh' >> /app/run_tasks.sh && \
     echo 'echo "--- [CRON] Iniciando tarefas agendadas..."' >> /app/run_tasks.sh && \
     echo 'python manage.py update_user_status' >> /app/run_tasks.sh && \
     echo 'python manage.py send_message' >> /app/run_tasks.sh && \
