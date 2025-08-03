@@ -23,6 +23,9 @@ class Students(models.Model):
     expiration_date = models.DateField(null=True, blank=True)
     last_status_change = models.DateField(auto_now=True)
 
+    class Meta:
+        ordering = ['name', 'lastname']
+
     def __str__(self):
         return f"{self.name} {self.lastname}"
 
