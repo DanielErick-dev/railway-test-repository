@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN SECRET_KEY=dummy DEBUG=False python manage.py collectstatic --no-input
+RUN IS_BUILD_PHASE=True python manage.py collectstatic --no-input
 
 RUN echo '#!/bin/sh' > /app/run_tasks.sh && \
     echo '. /etc/environment.sh' >> /app/run_tasks.sh && \
