@@ -22,12 +22,12 @@ RUN IS_BUILD_PHASE=True python manage.py collectstatic --no-input
 
 # Cria o script que será executado pelo cron
 RUN echo '#!/bin/sh' > /app/run_tasks.sh && \
+    echo 'cd /app' >> /app/run_tasks.sh && \
     echo 'echo "--- [CRON] Iniciando tarefas agendadas..."' >> /app/run_tasks.sh && \
     echo '/usr/local/bin/python manage.py update_user_status' >> /app/run_tasks.sh && \
     echo '/usr/local/bin/python manage.py send_message' >> /app/run_tasks.sh && \
     echo 'echo "--- [CRON] Tarefas agendadas finalizadas."' >> /app/run_tasks.sh && \
     chmod +x /app/run_tasks.sh
 
-# Cria o job do cron com as variáveis de ambiente
+# Cria o cron job com injeção dinâmica de ambiente
 RUN echo '*/3 * * * * printenv > /tmp/cron_env && . /tmp/cron_env && /app/run_tasks.sh >> /proc/1/fd/1 2>&1' | crontab -
-
