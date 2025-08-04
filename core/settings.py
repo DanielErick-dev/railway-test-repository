@@ -68,16 +68,28 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config('POSTGRES_DB'),
-        "USER": config('POSTGRES_USER'),
-        "PASSWORD": config('POSTGRES_PASSWORD'),
-        "HOST": config('POSTGRES_HOST'),
-        "PORT": config('POSTGRES_PORT', cast=int),
+if IS_BUILD_PHASE:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
-}
+elif ENVIRONMENT == 'production':
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600)
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": config('POSTGRES_DB'),
+            "USER": config('POSTGRES_USER'),
+            "PASSWORD": config('POSTGRES_PASSWORD'),
+            "HOST": config('POSTGRES_HOST'),
+            "PORT": config('POSTGRES_PORT', cast=int),
+        }
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
