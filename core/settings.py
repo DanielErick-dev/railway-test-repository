@@ -5,25 +5,10 @@ import dj_database_url
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-IS_BUILD_PHASE = config('IS_BUILD_PHASE', default=False, cast=bool)
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-local-dev-key-!@#$%^&*()')
 
-if not IS_BUILD_PHASE:
-    ENVIRONMENT = config('ENVIRONMENT', default='development')
-    CALLMEBOT_URL = config('CALLMEBOT_URL')
-    CALLMEBOT_API_KEY = config('CALLMEBOT_API_KEY')
-    CALLMEBOT_PHONE_NUMBER = config('CALLMEBOT_PHONE_NUMBER')
-    if ENVIRONMENT == 'production':
-        SECRET_KEY = config('SECRET_KEY')
-        DEBUG = False
-        ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
-        CSRF_TRUSTED_ORIGINS = ['https://railway-test-repository-production.up.railway.app/']
-        SESSION_COOKIE_SECURE = True
-        CSRF_COOKIE_SECURE = True
-        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    else:
-        SECRET_KEY = config('SECRET_KEY', default='django-insecure-local-dev-key-!@#$%^&*()')
-        DEBUG = True
-        ALLOWED_HOSTS = ['*']
+DEBUG = config('DEBUG', default=True, cast=bool)
+ENVIRONMENT = config('ENVIRONMENT', default='development')
 
 
 INSTALLED_APPS = [
@@ -74,24 +59,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-
-if not IS_BUILD_PHASE:
-    ENVIRONMENT = config('ENVIRONMENT', default='development')
-    if ENVIRONMENT == 'production':
-        DATABASES = {
-            'default': dj_database_url.config(conn_max_age=600)
-        }
-    else:
-        DATABASES = {
-            "default": {
-                "ENGINE": "django.db.backends.postgresql_psycopg2",
-                "NAME": config('POSTGRES_DB'),
-                "USER": config('POSTGRES_USER'),
-                "PASSWORD": config('POSTGRES_PASSWORD'),
-                "HOST": config('POSTGRES_HOST'),
-                "PORT": config('POSTGRES_PORT', cast=int),
-            }
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config('POSTGRES_DB', default='db_name'),
+        "USER": config('POSTGRES_USER', default='db_user'),
+        "PASSWORD": config('POSTGRES_PASSWORD', default='db_pass'),
+        "HOST": config('POSTGRES_HOST', default='localhost'),
+        "PORT": config('POSTGRES_PORT', default=5432, cast=int),
+    }
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -128,3 +105,24 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+if ENVIRONMENT == 'production':
+    ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
+    CSRF_TRUSTED_ORIGINS = config(
+        'CSRF_TRUSTED_ORIGINS',
+        cast=lambda v: [s.strip() for s in v.split(',')]
+    )
+
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+IS_BUILD_PHASE = config('IS_BUILD_PHASE', default=False, cast=bool)
+
+if not IS_BUILD_PHASE:
+    CALLMEBOT_URL = config('CALLMEBOT_URL')
+    CALLMEBOT_API_KEY = config('CALLMEBOT_API_KEY')
+    CALLMEBOT_PHONE_NUMBER = config('CALLMEBOT_PHONE_NUMBER')
+
