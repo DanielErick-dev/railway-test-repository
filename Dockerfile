@@ -13,13 +13,7 @@ COPY . .
 
 RUN IS_BUILD_PHASE=True python manage.py collectstatic --no-input
 
-RUN echo '#!/bin/sh' > /app/run_tasks.sh && \
-    echo '. /app/env.sh' >> /app/run_tasks.sh && \
-    echo 'cd /app' >> /app/run_tasks.sh && \
-    echo 'echo "--- [CRON] Iniciando tarefas agendadas..."' >> /app/run_tasks.sh && \
-    echo '/usr/local/bin/python manage.py update_user_status' >> /app/run_tasks.sh && \
-    echo '/usr/local/bin/python manage.py send_message' >> /app/run_tasks.sh && \
-    echo 'echo "--- [CRON] Tarefas agendadas finalizadas."' >> /app/run_tasks.sh && \
-    chmod +x /app/run_tasks.sh
+COPY entrypoint.sh run_tasks.sh /app/
+RUN chmod +x /app/entrypoint.sh /app/run_tasks.sh
 
-RUN echo '*/3 * * * * /app/run_tasks.sh >> /proc/1/fd/1 2>&1' | crontab -
+CMD ["./entrypoint.sh"]
