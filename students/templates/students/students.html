@@ -6,126 +6,184 @@
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <h1 class="text-3xl font-bold text-white">Gerenciamento de Alunos</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Header Section -->
+        <div class="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div>
+                <h1 class="text-3xl font-bold text-white mb-2">Gerenciamento de Alunos</h1>
+                <p class="text-gray-400">Gerencie todos os alunos da academia</p>
+            </div>
             <a 
                 href="{% url 'create_students' %}"
-                class="flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-green-500 transition"
+                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
-                <i class="bi bi-plus-lg"></i>
+                <i class="bi bi-plus-lg text-lg"></i>
                 <span>Novo Aluno</span>
             </a>
         </div>
 
-        <div class="bg-gray-800/50 rounded-xl border border-gray-700 shadow-lg overflow-hidden mb-8">
-            <div class="p-4 border-b border-gray-700">
+        <!-- Search and Filters Section -->
+        <div class="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-xl overflow-hidden mb-8">
+            <div class="p-6 border-b border-gray-700/50">
                 <form 
                     action="{% url 'get_students' %}"
                     method="get"
-                    class="flex flex-col md:flex-row gap-4"
+                    class="flex flex-col lg:flex-row gap-4"
                 >
-                    <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        class="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-600 transition w-full sm:w-1/2 md:w-1/3"
-                        placeholder="Buscar por nome..."
-                        value="{{ request.GET.name }}"
-                    >
-                    <input
-                        type="text"
-                        name="cpf"
-                        id="cpf"
-                        class="bg-gray-700 text-white placeholder-gray-400 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-600 transition w-full sm:w-1/2 md:w-1/3"
-                        placeholder="Buscar por CPF..."
-                        value="{{ request.GET.cpf }}"
-                    >
-                    <button
-                        type="submit"
-                        class="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition"
-                    >
-                        <i class="bi bi-search"></i>
-                    </button>
+                    <div class="flex-1">
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Nome do Aluno</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            class="w-full bg-gray-700/50 text-white placeholder-gray-400 border border-gray-600/50 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                            placeholder="Digite o nome do aluno..."
+                            value="{{ request.GET.name }}"
+                        >
+                    </div>
+                    <div class="flex-1">
+                        <label for="cpf" class="block text-sm font-medium text-gray-300 mb-2">CPF</label>
+                        <input
+                            type="text"
+                            name="cpf"
+                            id="cpf"
+                            class="w-full bg-gray-700/50 text-white placeholder-gray-400 border border-gray-600/50 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                            placeholder="Digite o CPF..."
+                            value="{{ request.GET.cpf }}"
+                        >
+                    </div>
+                    <!-- Ajustado layout do botão para ficar do mesmo tamanho dos inputs no mobile -->
+                    <div class="w-full lg:w-auto lg:flex lg:items-end">
+                        <button
+                            type="submit"
+                            class="w-full lg:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                        >
+                            <i class="bi bi-search text-lg"></i>
+                            <span class="lg:hidden">Buscar</span>
+                        </button>
+                    </div>
                 </form>
             </div>
+        </div>
 
-            {% if students %}
-                <div class="divide-y divide-gray-700/50">
-                    {% for student in students %}
-                        <div class="p-4 flex flex-col gap-4 hover:bg-gray-700/50">
-                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+        {% if students %}
+            <!-- Students Grid/List -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+                {% for student in students %}
+                    <div class="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-xl overflow-hidden hover:shadow-2xl hover:border-gray-600/50 transition-all duration-300 transform hover:-translate-y-1">
+                        <!-- Student Header -->
+                        <div class="p-6 pb-4">
+                            <div class="flex items-start justify-between mb-4">
                                 <div class="flex-1">
-                                    <p class="text-lg font-medium text-white">
+                                    <h3 class="text-xl font-bold text-white mb-1">
                                         {{ student.name|title }} {{ student.lastname|title }}
-                                    </p>
-                                    <p class="font-mono text-sm text-gray-300">
-                                        {{ student.cpf }}
-                                    </p>
-                                    <p class="font-mono text-sm text-gray-400">
+                                    </h3>
+                                    <p class="text-sm text-gray-400 font-mono">
                                         ID: #{{ student.id|stringformat:"04d" }}
                                     </p>
                                 </div>
-                                <div class="flex justify-center sm:justify-end items-center gap-4">
+                                <div class="flex-shrink-0">
                                     {% if student.get_status_display == 'Ativo' %}
-                                        <span class="px-3 py-1 text-xs font-medium text-green-300 bg-green-900/50 rounded-full">Ativo</span>
+                                        <span class="inline-flex items-center px-3 py-1 text-xs font-semibold text-green-300 bg-green-900/50 rounded-full border border-green-700/50">
+                                            <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                                            Ativo
+                                        </span>
                                     {% elif student.get_status_display == 'Pendente' %}
-                                        <span class="px-3 py-1 text-xs font-medium text-orange-400 bg-orange-900/50 rounded-full">Pendente</span>
+                                        <span class="inline-flex items-center px-3 py-1 text-xs font-semibold text-orange-400 bg-orange-900/50 rounded-full border border-orange-700/50">
+                                            <div class="w-2 h-2 bg-orange-400 rounded-full mr-2 animate-pulse"></div>
+                                            Pendente
+                                        </span>
                                     {% else %}
-                                        <span class="px-3 py-1 text-xs font-medium text-red-300 bg-red-900/50 rounded-full">Inativo</span>
+                                        <span class="inline-flex items-center px-3 py-1 text-xs font-semibold text-red-300 bg-red-900/50 rounded-full border border-red-700/50">
+                                            <div class="w-2 h-2 bg-red-400 rounded-full mr-2"></div>
+                                            Inativo
+                                        </span>
                                     {% endif %}
                                 </div>
                             </div>
 
-                            <div class="flex flex-wrap justify-start sm:justify-end items-center gap-3 mt-3">
+                            <!-- Student Info -->
+                            <div class="space-y-2 mb-6">
+                                <div class="flex items-center text-gray-300">
+                                    <i class="bi bi-person-vcard text-blue-400 mr-3"></i>
+                                    <span class="font-mono text-sm">{{ student.cpf }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="px-6 py-4 bg-gray-900/30 border-t border-gray-700/50">
+                            <!-- Modificado layout dos botões para ocupar 100% da largura com distribuição igual -->
+                            <div class="grid grid-cols-4 gap-2">
                                 <a 
                                     href="{% url 'detail_students' student.id %}"
-                                    title="Detalhes"
-                                    class="p-2 text-gray-400 hover:bg-gray-600 hover:text-white rounded-lg"
+                                    title="Ver Detalhes"
+                                    class="flex flex-col items-center justify-center gap-1 px-2 py-3 text-xs font-medium text-blue-300 bg-blue-900/30 hover:bg-blue-900/50 rounded-lg transition-all duration-200 border border-blue-700/30 hover:border-blue-600/50 hover:scale-105"
                                 >
-                                    <i class="bi bi-eye-fill"></i> Detalhes
+                                    <i class="bi bi-eye-fill text-sm"></i>
+                                    <span class="hidden md:block text-[10px] leading-tight text-center">Ver</span>
                                 </a>
                                 <a
                                     href="{% url 'update_students' student.id %}"
-                                    title="Editar"
-                                    class="p-2 text-gray-400 hover:bg-gray-600 hover:text-white rounded-lg"
+                                    title="Editar Aluno"
+                                    class="flex flex-col items-center justify-center gap-1 px-2 py-3 text-xs font-medium text-yellow-300 bg-yellow-900/30 hover:bg-yellow-900/50 rounded-lg transition-all duration-200 border border-yellow-700/30 hover:border-yellow-600/50 hover:scale-105"
                                 >
-                                    <i class="bi bi-pencil-fill"></i> Editar
+                                    <i class="bi bi-pencil-fill text-sm"></i>
+                                    <span class="hidden md:block text-[10px] leading-tight text-center">Editar</span>
                                 </a>
-                                <button
-                                    onclick="confirmDelete('{{ student.id }}', '{{ student.name|escapejs }}', '{{ student.lastname|escapejs }}')"
-                                    class="text-red-500 hover>text-red-700"
-                                    title="Deletar Aluno"
-                                >
-                                    <i class="bi bi-trash"></i> Deletar
-                                </button>
                                 <a
                                     href="{% url 'atualize_students' student.id %}"
                                     title="Atualizar Matrícula"
-                                    class="p-2 text-gray-400 hover:bg-gray-600 hover:text-white rounded-lg"
+                                    class="flex flex-col items-center justify-center gap-1 px-2 py-3 text-xs font-medium text-green-300 bg-green-900/30 hover:bg-green-900/50 rounded-lg transition-all duration-200 border border-green-700/30 hover:border-green-600/50 hover:scale-105"
                                     onclick="confirmAtualize(event, this.href, '{{ student.name|escapejs }}', '{{ student.lastname|escapejs }}', '{{ student.sex }}')"
                                 >
-                                    <i class="bi bi-calendar-check-fill"></i> Atualizar
+                                    <i class="bi bi-calendar-check-fill text-sm"></i>
+                                    <span class="hidden md:block text-[10px] leading-tight text-center">Pagar</span>
                                 </a>
+                                <button
+                                    onclick="confirmDelete('{{ student.id }}', '{{ student.name|escapejs }}', '{{ student.lastname|escapejs }}')"
+                                    class="flex flex-col items-center justify-center gap-1 px-2 py-3 text-xs font-medium text-red-300 bg-red-900/30 hover:bg-red-900/50 rounded-lg transition-all duration-200 border border-red-700/30 hover:border-red-600/50 hover:scale-105"
+                                    title="Deletar Aluno"
+                                >
+                                    <i class="bi bi-trash text-sm"></i>
+                                    <span class="hidden md:block text-[10px] leading-tight text-center">Excluir</span>
+                                </button>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-xl overflow-hidden">
+                <div class="text-center py-16 px-6">
+                    <div class="mx-auto w-24 h-24 bg-gray-700/50 rounded-full flex items-center justify-center mb-6">
+                        <i class="bi bi-people text-4xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Nenhum aluno encontrado</h3>
+                    <p class="text-gray-400 mb-6">Nenhum aluno corresponde aos filtros aplicados.</p>
+                    <a 
+                        href="{% url 'create_students' %}"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    >
+                        <i class="bi bi-plus-lg"></i>
+                        <span>Cadastrar Primeiro Aluno</span>
+                    </a>
                 </div>
-            {% else %}
-                <div class="text-center p-12">
-                    <i class="bi bi-people text-5xl text-gray-500"></i>
-                    <p class="mt-4 text-lg font-medium text-white">Nenhum aluno encontrado</p>
-                    <p class="text-gray-400">Nenhum aluno corresponde aos filtros aplicados.</p>
-                </div>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
 
+        <!-- Pagination -->
         {% if page_obj.has_other_pages %}
-            <div class="p-4 border-t border-gray-700 bg-gray-800/50">
-                {% include 'core/components/_pagination.html' %}
+            <div class="bg-gray-800/60 backdrop-blur-sm rounded-2xl border border-gray-700/50 shadow-xl overflow-hidden">
+                <div class="p-6">
+                    {% include 'core/components/_pagination.html' %}
+                </div>
             </div>
         {% endif %}
     </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{% static 'js/confirm_atualize.js' %}"></script>
     <script src="{% static 'js/confirm_delete.js' %}"></script>
